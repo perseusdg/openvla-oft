@@ -55,7 +55,7 @@ OXE_DATASET_CONFIGS = {
     "lerobot_dataset" : {
         "image_obs_keys": {"primary": "cam_main", "secondary": None, "wrist": "cam_wrist"},
         "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
-        "state_obs_keys" : ["state"]
+        "state_obs_keys" : ["state"],
         "state_encoding": StateEncoding.JOINT,
         "action_encoding": ActionEncoding.JOINT_POS,
     },
