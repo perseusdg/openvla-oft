@@ -933,4 +933,3 @@ OXE_STANDARDIZATION_TRANSFORMS = {
     "lerobot_dataset": aloha_dataset_transform,
     "'pick up the red cube'": aloha_dataset_transform,
 }
-p
