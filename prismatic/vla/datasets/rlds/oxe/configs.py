@@ -59,7 +59,7 @@ OXE_DATASET_CONFIGS = {
         "state_encoding": StateEncoding.JOINT,
         "action_encoding": ActionEncoding.JOINT_POS,
     },
-    "pick_up_the_red_cube" : {
+    "pick_up_red_cube" : {
         "image_obs_keys": {"primary": "cam_main", "secondary": None, "wrist": "cam_wrist"},
         "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
         "state_obs_keys" : ["state"],
