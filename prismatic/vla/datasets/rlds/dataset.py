@@ -488,6 +488,8 @@ def make_interleaved_dataset(
             datasets according to their sampling weights. If None, defaults to AUTOTUNE for every dataset.
     """
     # Default to uniform sampling (if `sample_weights` is not specified)
+    print("Dataset kwargs List:", dataset_kwargs_list)
+    print("Length of Dataset kwargs List:", len(dataset_kwargs_list))
     if not sample_weights:
         sample_weights = [1.0] * len(dataset_kwargs_list)
 
