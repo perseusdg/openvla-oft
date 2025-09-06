@@ -232,6 +232,9 @@ def make_dataset_from_rlds(
 
     # construct the dataset
     split = "train" if train else "val"
+    if split == "val" and "val" not in builder.info.splits:
+        overwatch.warning(f"Validation split 'val' not found for dataset {name}. Using 'train' split instead.")
+        split = "train"
 
     dataset = dl.DLataset.from_rlds(builder, split=split, shuffle=shuffle, num_parallel_reads=num_parallel_reads)
 
@@ -492,6 +495,7 @@ def make_interleaved_dataset(
     print("Length of Dataset kwargs List:", len(dataset_kwargs_list))
     if not sample_weights:
         sample_weights = [1.0] * len(dataset_kwargs_list)
+    # sample_weights = 1.0
 
     if len(sample_weights) != len(dataset_kwargs_list):
         raise ValueError(f"sample_weights must be None or have length {len(dataset_kwargs_list)}.")
@@ -511,7 +515,9 @@ def make_interleaved_dataset(
         all_dataset_statistics[dataset_kwargs["name"]] = dataset_statistics
 
     # Get the indices of the "primary" datasets (i.e., datasets with sample_weight == 1.0)
-    primary_dataset_indices = np.array([idx for idx in range(len(sample_weights)) if sample_weights[idx] == 1.0])
+    primary_dataset_indices = np.array(
+        [idx for idx in range(len(sample_weights)) if np.isclose(sample_weights[idx], 1.0)]
+    )
 
     # Balance and Normalize Weights
     if balance_weights:
@@ -524,7 +530,11 @@ def make_interleaved_dataset(
     print("Primary Dataset Indices:", primary_dataset_indices)
     print("Sample Weights:", sample_weights)
     print("Dataset Sizes:", dataset_sizes)
-    dataset_len = int((np.array(dataset_sizes) / sample_weights)[primary_dataset_indices].max())
+    if len(primary_dataset_indices) > 0:
+        dataset_len = int((np.array(dataset_sizes) / sample_weights)[primary_dataset_indices].max())
+    else:
+        # if no primary dataset, just use the total number of transitions
+        dataset_len = int(np.sum(dataset_sizes))
 
     # Allocate Threads based on Weights
     threads_per_dataset = allocate_threads(traj_transform_threads, sample_weights)

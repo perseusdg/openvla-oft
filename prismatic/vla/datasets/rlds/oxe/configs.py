@@ -53,7 +53,7 @@ class ActionEncoding(IntEnum):
 # === Individual Dataset Configs ===
 OXE_DATASET_CONFIGS = {
     "lerobot_dataset" : {
-        "image_obs_keys": {"primary": "cam_main", "secondary": None, "wrist": "cam_wrist"},
+        "image_obs_keys": {"primary": "cam_main", "secondary": None, "left_wrist": "cam_wrist", "right_wrist": None},
         "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
         "state_obs_keys" : ["state"],
         "state_encoding": StateEncoding.JOINT,
